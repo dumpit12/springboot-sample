@@ -60,7 +60,7 @@ jobs:
           context: .
           push: true
           ## tags: ${{ steps.meta.outputs.tags }}
-          tags: latest
+          tags: test
           labels: ${{ steps.meta.outputs.labels }}
 
 
