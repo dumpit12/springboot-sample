@@ -31,6 +31,6 @@ jobs:
     - name: Run tests
       run: mvn verify
     - name: Build docker image
-      run: docker build --tag 'springboot_sample:test'
+      run: docker build -tag springboot_sample/test
 
 
