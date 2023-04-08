@@ -30,6 +30,6 @@ jobs:
     - name: Run tests
       run: mvn verify
     - name: Build docker image
-      run: docker build --file Dockerfile --tag springboot_sample:$(date +%s)
+      run: docker build --tag springboot_sample:$(date +%s)
 
 
