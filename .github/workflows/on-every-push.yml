@@ -6,11 +6,12 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: On every push
 
 on:
   push:
-    branches: [ "!master" ]
+    branches-ignore:
+      - master
 
 jobs:
   build:
