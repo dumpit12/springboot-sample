@@ -32,7 +32,7 @@ jobs:
       run: mvn verify
 
   docker:
-    uses: build
+    uses: actions/build
     runs-on: ubuntu-latest
     steps:
       - name: Login to docker
