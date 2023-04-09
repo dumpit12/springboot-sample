@@ -1,4 +1,4 @@
-name: Promote
+name: Promote Image
 on:
   workflow_dispatch:
     inputs:
@@ -13,6 +13,6 @@ jobs:
   retag_image:
     runs-on: ubuntu-latest
     steps:
-      - name: Testing
-        run: echo "${{github.event.inputs.source}} to ${{github.event.inputs.target}}"
+      - name: Promote
+        run: docker tag ${{github.event.inputs.source}} ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
 
