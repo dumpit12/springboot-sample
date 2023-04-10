@@ -2,6 +2,7 @@
 
 ### This application has been integrated with GitHub actions
 Build status of the master branch
+[![Merge to master](https://github.com/dumpit12/springboot-sample/actions/workflows/push-to-master.yml/badge.svg?branch=master)](https://github.com/dumpit12/springboot-sample/actions/workflows/push-to-master.yml)
 
 ## How to run this application
 
