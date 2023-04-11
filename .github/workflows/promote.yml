@@ -23,6 +23,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{secrets.DOCKER_USERNAME}}/sample
+      - name: test
+        uses: docker/build-push-action@v4
+        run: docker image ls ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}}
       - name: Promote
         run: docker image tag ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}} ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
 
