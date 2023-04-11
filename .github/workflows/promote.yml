@@ -20,8 +20,8 @@ jobs:
         with:
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_PASSWORD}}
-      - name: cwd
-        run: ls
+      - name: docker images
+        run: docker pull ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}}
       - name: Promote
         run:  docker tag ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}} ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
 
