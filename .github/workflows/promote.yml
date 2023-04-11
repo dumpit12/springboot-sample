@@ -25,10 +25,5 @@ jobs:
       - name: Retag Image
         run:  docker tag ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}} ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
       - name: Push retagged image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
+        run: docker push ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
 
