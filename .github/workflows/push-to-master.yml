@@ -2,7 +2,7 @@ name: Merge to master
 on:
   push:
     branches:
-      - master
+      - testing
 
 jobs:
   build:
@@ -51,8 +51,11 @@ jobs:
       - uses: actions/checkout@v3
       - name: Installation
         run: gh extension install actions/gh-actions-cache
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Remove cache
         run: gh actions-cache list -B ${GITHUB_REF##*/}
+
 
 
 
