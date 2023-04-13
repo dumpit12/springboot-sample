@@ -54,7 +54,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Remove cache
-        run: gh actions-cache list -B ${GITHUB_REF##*/}
+        run: echo ${GITHUB_REF##*/}
 
 
 
