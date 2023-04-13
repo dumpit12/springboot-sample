@@ -44,15 +44,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/sample:${{vars.TAG}}
-  cleanup:
-    needs: [build, docker]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Installation
-        run: gh extension install actions/gh-actions-cache
-      - name: Remove cache
-        run: gh actions-cache list -B ${GITHUB_REF##*/}
 
 
 
