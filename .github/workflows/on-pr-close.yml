@@ -20,7 +20,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
-            if(cache.ref == 'refs/heads/master'){
+            if(caches.ref == 'refs/heads/master'){
             for (const cache of caches.data.actions_caches) {
               console.log(cache)
               github.rest.actions.deleteActionsCacheById({
