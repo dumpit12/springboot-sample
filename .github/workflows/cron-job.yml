@@ -12,9 +12,9 @@
 
 name: First Cron Job
 on:
-  # Triggers the workflow every 1 minute
+  # Triggers the workflow every 5 minutes
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "*/5 * * * *"
 jobs:
   say-hi:
     name: Hello world
