@@ -14,7 +14,7 @@ public class DeleteEmployee {
     private final RepositoryService repositoryService;
 
     @DeleteMapping("/delete")
-    public String deleteEmployee(@RequestParam String id){
+    public String deleteEmployee(@RequestParam String id) {
         return repositoryService.deleteEmployeeById(id);
     }
-
+}
