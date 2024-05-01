@@ -9,7 +9,7 @@ on:
         required: true
 
 env:
-  JAR_UPLOAD: ${{ (github.ref == 'refs/heads/improvements' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
+  JAR_UPLOAD: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
 
 jobs:
   general-workflow:
