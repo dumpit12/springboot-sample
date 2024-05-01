@@ -4,17 +4,9 @@ on:
   push:
   workflow_call:
     inputs:
-      branch-name:
-        type: string
-        required: true
       image-tag:
         type: string
         required: true
-
-#env:
-#  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_call' }}
-#  IS_PUSH_EVENT: ${{ github.event_name == 'push' }}
-#  IS_MAIN_BRANCH: ${{ github.ref == 'refs/heads/improvements' }}
 
 env:
   JAR_UPLOAD: ${{ (github.ref == 'refs/heads/improvements' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
@@ -45,23 +37,11 @@ jobs:
 
   push-to-dockerhub:
     name: Push Image to Registry
+    if: ${{ (github.ref == 'refs/heads/improvements' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
     needs: [ general-workflow ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Event Type and Set Image Tag
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_call" ]; then
-            IMAGE_TAG="${{ inputs.image-tag }}"
-          else
-            IMAGE_TAG="${{ vars.TAG }}"
-          fi
-          echo "Image tag is $IMAGE_TAG"
-          echo "Branch name is ${{ github.ref }}"
-      - name: Push to DockerHub
-        uses: ./.github/workflows/push-to-registry.yml
-        if: ${{ env.JAR_UPLOAD == 'true' }}
-        with:
-          branch-name: ${{ github.ref }}
-          image-tag: ${{ IMAGE_TAG }}
+    uses: ./.github/workflows/push-to-registry.yml
+    with:
+      branch-name: ${{ github.ref }}
+      image-tag: ${{ IMAGE_TAG }}
 
 
