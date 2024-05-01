@@ -37,7 +37,7 @@ jobs:
         run: mvn -B clean verify --file pom.xml
 
       - name: Upload JAR File
-        if: ${{ env.JAR_UPLOAD == true }}
+        if: ${{ env.JAR_UPLOAD == 'true' }}
         uses: actions/upload-artifact@v2
         with:
           name: application-jar
