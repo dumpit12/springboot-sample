@@ -46,7 +46,7 @@ jobs:
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
-      IMAGE_TAG: ${{ env.IS_VIA_WORKFLOW_DISPATCH && inputs.IMAGE_TAG || vars.TAG }}
+      IMAGE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.IMAGE_TAG || vars.TAG }}
     secrets: inherit
 
 
