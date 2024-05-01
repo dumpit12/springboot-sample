@@ -4,24 +4,21 @@ on:
   push:
   workflow_call:
     inputs:
-      BRANCH_NAME:
-        type: string
-        required: true
       IMAGE_TAG:
         type: string
         required: true
 
 env:
-  JAR_UPLOAD: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
+  IS_VIA_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+  IS_PUSH_TO_MASTER_EVENT: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
 
 jobs:
   general-workflow:
+    name: General Workflow
     runs-on: ubuntu-latest
     steps:
       - name: Branch Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_call' && inputs.BRANCH_NAME || github.ref }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -34,7 +31,7 @@ jobs:
         run: mvn -B clean verify --file pom.xml
 
       - name: Upload JAR File
-        if: ${{ env.JAR_UPLOAD == 'true' }}
+        if: ${{ env.IS_VIA_WORKFLOW_DISPATCH == 'true' || env.IS_PUSH_TO_MASTER_EVENT == 'true' }}
         uses: actions/upload-artifact@v2
         with:
           name: application-jar
@@ -42,12 +39,11 @@ jobs:
 
   push-to-dockerhub:
     name: Push Image to Registry
-    if: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
+    if: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_dispatch' }}
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
-      BRANCH_NAME: ${{ github.event_name == 'workflow_call' && inputs.BRANCH_NAME || 'master' }}
-      IMAGE_TAG: ${{ github.event_name == 'workflow_call' && inputs.IMAGE_TAG || vars.TAG }}
+      IMAGE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.IMAGE_TAG || vars.TAG }}
     secrets: inherit
 
 
