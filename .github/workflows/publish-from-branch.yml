@@ -1,4 +1,4 @@
-name: Publish Image From Branch
+name: Publish Image From Branch - ${{ github.event.inputs.branch-name }}
 on:
   workflow_dispatch:
     inputs:
