@@ -46,7 +46,7 @@ jobs:
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
-      BRANCH_NAME: ${{ github.event_name == 'workflow_call' && inputs.BRANCH_NAME || master }}
+      BRANCH_NAME: ${{ github.event_name == 'workflow_call' && inputs.BRANCH_NAME || 'master' }}
       IMAGE_TAG: ${{ github.event_name == 'workflow_call' && inputs.IMAGE_TAG || vars.TAG }}
     secrets: inherit
 
