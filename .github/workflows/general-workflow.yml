@@ -10,7 +10,6 @@ on:
 
 env:
   JAR_UPLOAD: ${{ (github.ref == 'refs/heads/improvements' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
-  IS_DEFAULT_BRANCH: ${{ github.ref == 'refs/heads/' }}${{ github.repository.default_branch }}
 
 jobs:
   general-workflow:
@@ -38,7 +37,7 @@ jobs:
 
   push-to-dockerhub:
     name: Push Image to Registry
-    if: ${{ (env.IS_DEFAULT_BRANCH == 'true' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
+    if: ${{ (github.ref == 'refs/heads/improvements' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
