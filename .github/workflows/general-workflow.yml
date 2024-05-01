@@ -14,7 +14,7 @@ on:
 env:
   IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_call' }}
   IS_PUSH_EVENT: ${{ github.event_name == 'push' }}
-  IS_MAIN_BRANCH: ${{ github.ref_name == 'refs/heads/improvements' }}
+  IS_MAIN_BRANCH: ${{ github.ref == 'refs/heads/improvements' }}
 
 jobs:
   build:
