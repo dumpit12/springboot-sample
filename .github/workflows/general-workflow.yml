@@ -13,13 +13,10 @@ env:
   IS_PUSH_TO_DEFAULT_BRANCH: ${{ github.ref == vars.DEFAULT_BRANCH && github.event_name == 'push' }}
 
 jobs:
-  general-workflow:
+  execute:
     name: General Workflow
     runs-on: ubuntu-latest
     steps:
-      - name: TO be removed
-        run: echo ${{ github.event.repository.default_branch }}
-        
       - name: Branch Checkout
         uses: actions/checkout@v4
 
@@ -40,10 +37,10 @@ jobs:
           name: application-jar
           path: target/*.jar
 
-  push-to-dockerhub:
-    name: Push Image to Registry
+  publish-image:
+    name: Publish Image
     if: ${{ (github.ref == vars.DEFAULT_BRANCH && github.event_name == 'push') || github.event_name == 'workflow_dispatch' }}
-    needs: [ general-workflow ]
+    needs: [ execute ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
       IMAGE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.IMAGE_TAG || vars.TAG }}
