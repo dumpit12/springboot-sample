@@ -44,7 +44,7 @@ jobs:
           path: target/*.jar
 
   push-to-dockerhub-from-master:
-    needs: [ upload-jar ]
+    needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     if: ${{ github.ref == 'refs/heads/improvements' && github.event_name == 'push' }}
     with:
