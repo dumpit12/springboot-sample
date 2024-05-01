@@ -1,3 +1,4 @@
+#file: noinspection YAMLSchemaValidation
 name: General Workflow
 
 on:
@@ -11,6 +12,8 @@ on:
 env:
   IS_VIA_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
   IS_PUSH_TO_MASTER_EVENT: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+
+pushToRegistryCondition: &IS_PUSH_TO_REGISTRY_ALLOWED ${{ env.IS_PUSH_TO_MASTER_EVENT == 'true' || env.IS_VIA_WORKFLOW_DISPATCH == 'true' }}
 
 jobs:
   general-workflow:
@@ -39,11 +42,11 @@ jobs:
 
   push-to-dockerhub:
     name: Push Image to Registry
-    if: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_dispatch' }}
+    if: *IS_PUSH_TO_REGISTRY_ALLOWED
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
-      IMAGE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.IMAGE_TAG || vars.TAG }}
+      IMAGE_TAG: ${{ env.IS_VIA_WORKFLOW_DISPATCH && inputs.IMAGE_TAG || vars.TAG }}
     secrets: inherit
 
 
