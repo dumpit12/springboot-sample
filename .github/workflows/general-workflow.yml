@@ -17,32 +17,27 @@ env:
   IS_MAIN_BRANCH: ${{ github.ref == 'refs/heads/improvements' }}
 
 jobs:
-  build:
+  general-workflow:
     runs-on: ubuntu-latest
     steps:
-    - name: Branch Checkout
-      uses: actions/checkout@v4
+      - name: Branch Checkout
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
-    - name: Build & Run Tests
-      run: mvn -B clean verify --file pom.xml
+      - name: Build & Run Tests
+        run: mvn -B clean verify --file pom.xml
 
-    - name: Push Image to Docker Hub
-      uses: ./.github/actions/push-to-registry
-      if: ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true }}
-      with:
-        branch-name: master
-        image-tag: ${{vars.TAG}}
-
-    - name: Push Image to Docker Hub From Custom Branch
-      uses: ./.github/actions/push-to-registry
-      if: ${{ env.IS_WORKFLOW_CALL == true }}
-      with:
-        branch-name: ${{ inputs.branch-name }}
-        image-tag: ${{ inputs.image-tag }}
+      - name: Push Image to Docker Hub
+        uses: ./.github/actions/push-to-registry
+        if: ${{ (env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true) || (env.IS_WORKFLOW_CALL == true) }}
+        with:
+          branch-name: |
+                    ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true ? 'master': inputs.branch-name }}
+          image-tag: |
+                    ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true ? vars.TAG: inputs.image-tag }}
