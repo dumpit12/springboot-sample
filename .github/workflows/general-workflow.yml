@@ -9,7 +9,7 @@ on:
         required: true
 
 env:
-  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_dispatch' }}
+  IS_VIA_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
   IS_PUSH_TO_MASTER_EVENT: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         run: mvn -B clean verify --file pom.xml
 
       - name: Upload JAR File
-        if: ${{ env.IS_WORKFLOW_CALL == 'true' || env.IS_PUSH_TO_MASTER_EVENT == 'true' }}
+        if: ${{ env.IS_VIA_WORKFLOW_DISPATCH == 'true' || env.IS_PUSH_TO_MASTER_EVENT == 'true' }}
         uses: actions/upload-artifact@v2
         with:
           name: application-jar
