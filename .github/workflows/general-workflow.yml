@@ -1,0 +1,48 @@
+name: General Workflow
+
+on:
+  push:
+  workflow_call:
+    inputs:
+      branch-name:
+        type: string
+        required: true
+      image-tag:
+        type: string
+        required: true
+
+env:
+  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_call' }}
+  IS_PUSH_EVENT: ${{ github.event_name == 'push' }}
+  IS_MAIN_BRANCH: ${{ github.ref_name == 'refs/heads/master' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Branch Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build & Run Tests
+      run: mvn -B clean verify --file pom.xml
+
+    - name: Push Image to Docker Hub
+      uses: ./.github/actions/push-to-registry
+      if: ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true }}
+      with:
+        branch-name: master
+        image-tag: ${{vars.TAG}}
+
+    - name: Push Image to Docker Hub From Custom Branch
+      uses: ./.github/actions/push-to-registry
+      if: ${{ env.IS_WORKFLOW_CALL == true }}
+      with:
+        branch-name: ${{ inputs.branch-name }}
+        image-tag: ${{ inputs.image-tag }}
