@@ -9,7 +9,7 @@ on:
         required: true
 
 env:
-  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_call' }}
+  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_dispatch' }}
   IS_PUSH_TO_MASTER_EVENT: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
 
 jobs:
