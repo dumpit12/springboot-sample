@@ -10,8 +10,7 @@ env:
   REPO_PATH: ${{secrets.DOCKER_USERNAME}}/sample:${{inputs.IMAGE_TAG}}
 
 jobs:
-  docker:
-    name: Push Image to Registry
+  execute:
     runs-on: ubuntu-latest
     steps:
       - name: Branch Checkout

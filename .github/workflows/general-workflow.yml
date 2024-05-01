@@ -13,7 +13,7 @@ env:
   IS_PUSH_TO_DEFAULT_BRANCH: ${{ github.ref == vars.DEFAULT_BRANCH && github.event_name == 'push' }}
 
 jobs:
-  general-workflow:
+  execute:
     name: General Workflow
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +37,8 @@ jobs:
           name: application-jar
           path: target/*.jar
 
-  push-to-dockerhub:
+  publish-image:
+    name: Publish Image
     if: ${{ (github.ref == vars.DEFAULT_BRANCH && github.event_name == 'push') || github.event_name == 'workflow_dispatch' }}
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
