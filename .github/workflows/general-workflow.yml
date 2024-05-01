@@ -11,10 +11,10 @@ on:
         type: string
         required: true
 
-env:
-  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_call' }}
-  IS_PUSH_EVENT: ${{ github.event_name == 'push' }}
-  IS_MAIN_BRANCH: ${{ github.ref == 'refs/heads/improvements' }}
+#env:
+#  IS_WORKFLOW_CALL: ${{ github.event_name == 'workflow_call' }}
+#  IS_PUSH_EVENT: ${{ github.event_name == 'push' }}
+#  IS_MAIN_BRANCH: ${{ github.ref == 'refs/heads/improvements' }}
 
 jobs:
   general-workflow:
@@ -35,14 +35,14 @@ jobs:
 
   push-to-dockerhub-from-master:
     uses: ./.github/workflows/push-to-registry.yml
-    if: ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true }}
+    if: ${{ github.ref == 'refs/heads/improvements' && github.event_name == 'push' }}
     with:
       branch-name: improvements
       image-tag: ${{ vars.TAG }}
 
   push-to-dockerhub-from-branch:
     uses: ./.github/workflows/push-to-registry.yml
-    if: ${{ env.IS_WORKFLOW_CALL == true }}
+    if: ${{ github.event_name == 'workflow_call' }}
     with:
       branch-name: ${{ inputs.branch-name }}
       image-tag: ${{ inputs.image-tag }}
