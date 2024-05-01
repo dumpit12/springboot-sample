@@ -43,5 +43,6 @@ jobs:
     with:
       branch-name: ${{ github.ref }}
       image-tag: ${{ github.event_name == 'workflow_call' && inputs.image-tag || vars.TAG }}
+    secrets: inherit
 
 
