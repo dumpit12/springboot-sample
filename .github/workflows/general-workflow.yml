@@ -34,14 +34,14 @@ jobs:
         run: mvn -B clean verify --file pom.xml
 
   push-to-dockerhub-from-master:
-    uses: ./.github/actions/push-to-registry.yml
+    uses: ./.github/workflows/push-to-registry.yml
     if: ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true }}
     with:
       branch-name: improvements
       image-tag: ${{ vars.TAG }}
 
   push-to-dockerhub-from-branch:
-    uses: ./.github/actions/push-to-registry.yml
+    uses: ./.github/workflows/push-to-registry.yml
     if: ${{ env.IS_WORKFLOW_CALL == true }}
     with:
       branch-name: ${{ inputs.branch-name }}
