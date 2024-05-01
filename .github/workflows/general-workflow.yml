@@ -10,7 +10,7 @@ on:
 
 env:
   JAR_UPLOAD: ${{ (github.ref == 'refs/heads/improvements' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
-  IS_DEFAULT_BRANCH: ${{ github.ref == 'refs/heads/' + github.repository.default_branch }}
+  IS_DEFAULT_BRANCH: ${{ github.ref == 'refs/heads/' }}${{ github.repository.default_branch }}
 
 jobs:
   general-workflow:
