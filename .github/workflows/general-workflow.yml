@@ -39,11 +39,11 @@ jobs:
 
   push-to-dockerhub:
     name: Push Image to Registry
-    if: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_call' }}
+    if: ${{ (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_dispatch' }}
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
-      IMAGE_TAG: ${{ github.event_name == 'workflow_call' && inputs.IMAGE_TAG || vars.TAG }}
+      IMAGE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.IMAGE_TAG || vars.TAG }}
     secrets: inherit
 
 
