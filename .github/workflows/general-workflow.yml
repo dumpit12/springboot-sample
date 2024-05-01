@@ -34,16 +34,20 @@ jobs:
         run: mvn -B clean verify --file pom.xml
 
   push-to-dockerhub-from-master:
+    needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     if: ${{ github.ref == 'refs/heads/improvements' && github.event_name == 'push' }}
     with:
       branch-name: improvements
       image-tag: ${{ vars.TAG }}
+    secrets: inherit
 
   push-to-dockerhub-from-branch:
+    needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     if: ${{ github.event_name == 'workflow_call' }}
     with:
       branch-name: ${{ inputs.branch-name }}
       image-tag: ${{ inputs.image-tag }}
+    secrets: inherit
 
