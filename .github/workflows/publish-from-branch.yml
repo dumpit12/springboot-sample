@@ -1,0 +1,20 @@
+name: Publish Image From Branch
+on:
+  workflow_dispatch:
+    inputs:
+      BRANCH_NAME:
+        type: string
+        description: Enter Branch Name
+        required: true
+      IMAGE_TAG:
+        type: string
+        description: Enter Image Tag
+        required: true
+
+jobs:
+  execute:
+    uses: ./.github/workflows/general-workflow.yml
+    with:
+      IMAGE_TAG: ${{ github.event.inputs.IMAGE_TAG }}
+      BRANCH_NAME: ${{ github.event.inputs.BRANCH_NAME }}
+    secrets: inherit

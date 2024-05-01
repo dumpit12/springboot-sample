@@ -1,16 +1,16 @@
-name: Merge to master
+name: Build & Push Image
 on:
   workflow_call:
     inputs:
-      branch-name:
+      BRANCH_NAME:
         type: string
         required: true
-      image-tag:
+      IMAGE_TAG:
         type: string
         required: true
 
 env:
-  REPO_PATH: ${{secrets.DOCKER_USERNAME}}/sample:${{inputs.image-tag}}
+  REPO_PATH: ${{secrets.DOCKER_USERNAME}}/sample:${{inputs.IMAGE_TAG}}
 
 jobs:
   docker:
@@ -20,7 +20,7 @@ jobs:
       - name: Branch Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.branch-name }}
+          ref: ${{ inputs.BRANCH_NAME }}
 
       - name: Download JAR file
         uses: actions/download-artifact@v2

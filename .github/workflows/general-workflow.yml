@@ -4,7 +4,10 @@ on:
   push:
   workflow_call:
     inputs:
-      image-tag:
+      BRANCH_NAME:
+        type: string
+        required: true
+      IMAGE_TAG:
         type: string
         required: true
 
@@ -17,6 +20,8 @@ jobs:
     steps:
       - name: Branch Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_call' && inputs.BRANCH_NAME || github.ref }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -41,8 +46,8 @@ jobs:
     needs: [ general-workflow ]
     uses: ./.github/workflows/push-to-registry.yml
     with:
-      branch-name: ${{ github.ref }}
-      image-tag: ${{ github.event_name == 'workflow_call' && inputs.image-tag || vars.TAG }}
+      BRANCH_NAME: ${{ github.event_name == 'workflow_call' && inputs.BRANCH_NAME || master }}
+      IMAGE_TAG: ${{ github.event_name == 'workflow_call' && inputs.IMAGE_TAG || vars.TAG }}
     secrets: inherit
 
 
