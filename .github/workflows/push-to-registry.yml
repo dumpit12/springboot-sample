@@ -11,6 +11,7 @@ env:
 
 jobs:
   execute:
+    name: Build & Push Image
     runs-on: ubuntu-latest
     steps:
       - name: Branch Checkout
