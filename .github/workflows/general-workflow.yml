@@ -33,11 +33,17 @@ jobs:
       - name: Build & Run Tests
         run: mvn -B clean verify --file pom.xml
 
-      - name: Push Image to Docker Hub
-        uses: ./.github/actions/push-to-registry
-        if: ${{ (env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true) || (env.IS_WORKFLOW_CALL == true) }}
-        with:
-          branch-name: |
-                    ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true ? 'master': inputs.branch-name }}
-          image-tag: |
-                    ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true ? vars.TAG: inputs.image-tag }}
+  push-to-dockerhub-from-master:
+    uses: ./.github/actions/push-to-registry.yml
+    if: ${{ env.IS_MAIN_BRANCH == true && env.IS_PUSH_EVENT == true }}
+    with:
+      branch-name: improvements
+      image-tag: ${{ vars.TAG }}
+
+  push-to-dockerhub-from-branch:
+    uses: ./.github/actions/push-to-registry.yml
+    if: ${{ env.IS_WORKFLOW_CALL == true }}
+    with:
+      branch-name: ${{ inputs.branch-name }}
+      image-tag: ${{ inputs.image-tag }}
+
