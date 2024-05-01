@@ -14,6 +14,7 @@ env:
 
 jobs:
   docker:
+    name: Push Image to Registry
     runs-on: ubuntu-latest
     steps:
       - name: Branch Checkout
