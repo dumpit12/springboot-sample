@@ -20,8 +20,8 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
       - name: Pull image
         run: docker pull ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}}
-      - name: Retag Image
+      - name: Re-tag Image
         run:  docker tag ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.source}} ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
-      - name: Push retagged image
+      - name: Push re-tagged image
         run: docker push ${{secrets.DOCKER_USERNAME}}/sample:${{github.event.inputs.target}}
 

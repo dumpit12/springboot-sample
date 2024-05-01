@@ -9,7 +9,6 @@ on:
 
 jobs:
   execute:
-    name: Trigger General Workflow
     uses: ./.github/workflows/general-workflow.yml
     with:
       IMAGE_TAG: ${{ github.event.inputs.IMAGE_TAG }}
